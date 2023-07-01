@@ -1,5 +1,8 @@
 package 그래프;
 
+/*
+    풀이 방법 -> 상하좌우와 대각선을 고려한 BFS를 이용
+ */
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
