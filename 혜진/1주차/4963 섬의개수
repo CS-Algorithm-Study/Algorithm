@@ -1,0 +1,78 @@
+#include <iostream>
+#include <queue>
+#include <cstring>
+using namespace std;
+
+int w, h,map[50][50],visited[50][50],cnt;
+int dx[8] = { 0,0,-1,1,1,-1,-1,1 };
+int dy[8] = { -1,1,0,0,-1,-1,1,1 };
+
+struct coor {
+	int y;
+	int x;
+};
+
+void bfs(int a, int b) {
+	queue<coor>qu;
+	qu.push({ a,b });
+
+	while (!qu.empty()) {
+		coor top = qu.front();
+		qu.pop();
+
+		for (int i = 0; i < 8; i++) {
+			int nextX = top.x + dx[i], nextY = top.y + dy[i];
+			if (nextX < 0 || nextX >= w || nextY < 0 || nextY >= h)
+				continue;
+
+			//[nextX][nextY]로 해서 틀림
+			if (visited[nextY][nextX] == 0 && map[nextY][nextX] == 1) {
+				visited[nextY][nextX] = cnt;
+				qu.push({ nextY,nextX });
+			}
+		}
+	}
+}
+
+int main() {
+	while (1) {
+		cin >> w >> h;
+		if (!w && !h)
+			break;
+
+		//간과한점 - map 배열 입력받으면서 bfs 돌리면 안됨 
+		for (int i = 0; i < h; i++) {
+			for (int j = 0; j < w; j++) {
+				cin >> map[i][j];
+			}
+		}
+
+		for (int i = 0; i < h; i++) {
+			for (int j = 0; j < w; j++) {
+				if (visited[i][j] == 0 && map[i][j] == 1) {
+					visited[i][j] = ++cnt;
+					bfs(i, j);
+					//cout << i << " " << j << "\n";
+				}
+			}
+		}
+		cout << cnt << "\n";
+
+		cnt = 0;
+  
+/*
+		//초기화 실패-??사용법 미숙 추정
+		for (int i = 0; i < h; i++) {
+			//include cstring
+			//간과한점 - map 초기화 안시켜줌
+			memset(map[i], w, 0);
+			memset(visited[i], w, 0);
+		}
+*/
+
+		for (int i = 0; i < 50; i++) 
+			for (int j = 0; j < 50; j++) 
+				map[i][j] = visited[i][j] = 0;
+			
+	}
+}
