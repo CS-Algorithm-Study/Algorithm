@@ -1,0 +1,53 @@
+#include <iostream>
+#include <queue>
+#include <cstring>
+using namespace std;
+
+int n, m,maze[101][101],visited[101][101];
+int dx[4] = { 0,0,-1,1 };
+int dy[4] = { -1,1,0,0 };
+
+struct coor {
+	int y;
+	int x;
+};
+
+void bfs(int a, int b) {
+	queue<coor>qu;
+	qu.push({ a,b });
+	maze[a][b] = 2;
+
+	while (!qu.empty()) {
+		coor top = qu.front();
+		qu.pop();
+
+		for (int i = 0; i < 4; i++) {
+			int nextX = top.x + dx[i], nextY = top.y + dy[i];
+			if (nextX <= 0 || nextX > m || nextY <= 0 || nextY > n)
+				continue;
+
+			if (maze[nextY][nextX] == 1) {
+				maze[nextY][nextX] = maze[top.y][top.x]+1;
+				qu.push({ nextY,nextX });
+			}
+		}
+	}
+}
+
+int main() {
+	cin >> n >> m;
+
+	string s_maze[101];
+	for (int i = 1; i <= n; i++)
+		cin >> s_maze[i];
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			maze[i][j]=s_maze[i][j-1]-'0';
+		}
+	}
+	bfs(1, 1);
+
+	cout << maze[n][m] - 1;
+		
+}
