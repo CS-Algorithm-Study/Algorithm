@@ -1,0 +1,52 @@
+#include<iostream>
+#include<queue>
+#include<vector>
+using namespace std;
+
+int n,a,b;
+vector<vector<int>>ve;
+int visited[500001];
+int bfs() {
+	int sum = 0;
+	queue<int>qu;
+	qu.push(1);
+	visited[1] = 1;
+
+	while (!qu.empty()) {
+		int top = qu.front();
+		qu.pop();
+		bool left = true;
+
+		for (int i = 0; i<ve[top].size(); i++) {
+			if (visited[ve[top][i]] == 0) {
+				left = false;
+				visited[ve[top][i]] = 1+visited[top];
+				qu.push(ve[top][i]);
+			}
+		}
+
+		if (left)sum += visited[top]-1;
+	}
+
+	if (sum % 2 == 0)
+		return 0;
+	else
+		return 1;
+}
+
+int main() {
+	scanf("%d", &n);
+	ve.resize(n + 1);
+
+	for (int i = 0; i < n - 1; i++) {
+		scanf("%d%d", &a, &b);
+		ve[a].push_back(b);
+		ve[b].push_back(a);
+	}
+
+	int ret = bfs();
+	if (ret == 1)
+		printf("Yes\n");
+	else
+		printf("No\n");
+}
